@@ -1,15 +1,16 @@
 import ProductCards from "./ProductCards";
 import { useEffect, useState } from "react";
-import { Button } from "flowbite-react";
+import { Button, Dropdown } from "flowbite-react";
+import Swal from "sweetalert2";
 
 const Products = () => {
-    const [products, setProducts]=useState([]);
-    const [currentPage, setCurrentPage]=useState(0);
-    const [itemsPerPage, setItemsPerPage]=useState(8);
+    const [products, setProducts] = useState([]);
+    const [currentPage, setCurrentPage] = useState(0);
+    const [itemsPerPage, setItemsPerPage] = useState(8);
     // const {count}=useLoaderData()
-    const [count, setCount]= useState(0);
+    const [count, setCount] = useState(0);
 
-    const numberOfPage = Math.ceil(count/itemsPerPage);
+    const numberOfPage = Math.ceil(count / itemsPerPage);
 
     // count the page
     // const pages = [];
@@ -18,51 +19,76 @@ const Products = () => {
     // }
     // same operation using one line code 
     const pages = [...Array(numberOfPage).keys()];
-    const handleItemPerPage =(e)=>{
-        const val =parseInt(e.target.value);
+    const handleItemPerPage = (e) => {
+        const val = parseInt(e.target.value);
         // console.log(val)
         setItemsPerPage(val);
         setCurrentPage(0);
     }
-    const handlePrevPage=()=>{
-        if(currentPage > 0){
-            setCurrentPage(currentPage -1)
+    const handlePrevPage = () => {
+        if (currentPage > 0) {
+            setCurrentPage(currentPage - 1)
         }
     }
-    const handleNextPage=()=>{
-        if(currentPage < pages.length-1){
-            setCurrentPage(currentPage +1)
+    const handleNextPage = () => {
+        if (currentPage < pages.length - 1) {
+            setCurrentPage(currentPage + 1)
         }
     }
     useEffect(() => {
         fetch(`http://localhost:5000/products?page=${currentPage}&&size=${itemsPerPage}`)
             .then(res => res.json())
             .then(data => setProducts(data))
-    }, [currentPage,itemsPerPage]);
+    }, [currentPage, itemsPerPage]);
 
-    useEffect(()=>{
+    useEffect(() => {
         fetch('http://localhost:5000/productsCount')
             .then(res => res.json())
             .then(data => setCount(data.count))
-    },[])
-    
-    console.log(count,products);
+    }, [])
+
+    // console.log(count,products);
+
+    // sorting section 
+    const handleSort = (sortType) => {
+        console.log(sortType)
+        fetch(`http://localhost:5000/sort/${sortType}`)
+            .then(res => res.json())
+            .then(data => {
+                console.log(data)
+                setProducts(data);
+                if (data) {
+                    Swal.fire({
+                        title: 'Success!',
+                        text: `Sorted successfully by ${sortType}`,
+                        icon: 'success',
+                        confirmButtonText: 'Cool'
+                    })
+                }
+            })
+    }
     return (
         <div>
+            <div>
+                <Dropdown label="Sort" dismissOnClick={false}>
+                    <Dropdown.Item onClick={()=>handleSort('date')}>Sort  by date</Dropdown.Item>
+                    <Dropdown.Item onClick={()=>handleSort('price')}>Sort by price</Dropdown.Item>
+                </Dropdown>
+            </div>
             <div className="grid grid-cols-1 md:grid-cols-4 lg:grid-col-5  gap-10">
                 {
                     products.map(item => <ProductCards key={item._id} item={item}></ProductCards>)
                 }
             </div>
             <div className="flex justify-start items-end gap-10 my-10">
-                <p className=" p-3">current Page: {currentPage}</p> 
-                
+                <p className=" p-3">current Page: {currentPage}</p>
+
                 <Button onClick={handlePrevPage}>Prev</Button>
                 {
-                    pages.map(page=><Button
-                         key={page} 
-                         onClick={()=> setCurrentPage(page)}
-                         className={currentPage===page? 'selected':undefined}>{page}</Button>)
+                    pages.map(page => <Button
+                        key={page}
+                        onClick={() => setCurrentPage(page)}
+                        className={currentPage === page ? 'selected' : undefined}>{page}</Button>)
                 }
                 <Button onClick={handleNextPage}>Next</Button>
                 <select onChange={handleItemPerPage} name="" id="" value={itemsPerPage}>
