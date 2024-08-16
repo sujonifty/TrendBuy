@@ -1,15 +1,14 @@
 import ProductCards from "./ProductCards";
 import { useEffect, useState } from "react";
-import { Button, Dropdown } from "flowbite-react";
+import { Button, Dropdown, Label, TextInput } from "flowbite-react";
 import Swal from "sweetalert2";
 
 const Products = () => {
     const [products, setProducts] = useState([]);
     const [currentPage, setCurrentPage] = useState(0);
     const [itemsPerPage, setItemsPerPage] = useState(8);
-    // const {count}=useLoaderData()
     const [count, setCount] = useState(0);
-
+    const [search, setSearch] = useState('');
     const numberOfPage = Math.ceil(count / itemsPerPage);
 
     // count the page
@@ -39,16 +38,21 @@ const Products = () => {
         fetch(`http://localhost:5000/products?page=${currentPage}&&size=${itemsPerPage}`)
             .then(res => res.json())
             .then(data => setProducts(data))
-    }, [currentPage, itemsPerPage]);
+    }, [currentPage, itemsPerPage, search]);
 
     useEffect(() => {
         fetch('http://localhost:5000/productsCount')
             .then(res => res.json())
             .then(data => setCount(data.count))
     }, [])
-
-    // console.log(count,products);
-
+    console.log('search', search)
+    // searching section 
+    const handleSearch = () => {
+        // fetch(`http://localhost:5000/search?page=${currentPage}&&size=${itemsPerPage}&search=${search}`)
+        fetch(`http://localhost:5000/search?search=${search}`)
+            .then(res => res.json())
+            .then(data => setProducts(data))
+    }
     // sorting section 
     const handleSort = (sortType) => {
         console.log(sortType)
@@ -69,11 +73,26 @@ const Products = () => {
     }
     return (
         <div>
+            <div className="flex justify-evenly items-center my-16">
             <div>
                 <Dropdown label="Sort" dismissOnClick={false}>
-                    <Dropdown.Item onClick={()=>handleSort('date')}>Sort  by date</Dropdown.Item>
-                    <Dropdown.Item onClick={()=>handleSort('price')}>Sort by price</Dropdown.Item>
+                    <Dropdown.Item onClick={() => handleSort('date')}>Sort  by date</Dropdown.Item>
+                    <Dropdown.Item onClick={() => handleSort('price')}>Sort by price</Dropdown.Item>
                 </Dropdown>
+            </div>
+            <div className="flex justify-center items-center ">
+                <TextInput
+                    className="w-3/4"
+                    id="search"
+                    placeholder="Searching..."
+                    value={search}
+                    onChange={(event) => setSearch(event.target.value)}
+                    required
+                />
+                <span className="w-full">
+                    <Button className="rounded-l-none -ml-2" onClick={handleSearch}>search</Button>
+                </span>
+            </div>
             </div>
             <div className="grid grid-cols-1 md:grid-cols-4 lg:grid-col-5  gap-10">
                 {
