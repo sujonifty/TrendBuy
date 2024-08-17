@@ -1,8 +1,6 @@
-# Frontend - React.js
 
-
-# Assignment_12: assignment_category_0010
-# Website Themes: Fitness Tracker Project
+# SCIC-Assignment
+# Website Themes: TrendBuy-products management
 
 # Website Link: 
 Click here to see the website:[https://trendbuy.netlify.app/]
