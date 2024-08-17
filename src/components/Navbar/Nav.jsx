@@ -27,7 +27,7 @@ const Nav = () => {
       </Navbar.Brand>
      
       <Navbar.Collapse>
-        <Navbar.Link href="/home" active>
+        <Navbar.Link href="/" active>
           Products
         </Navbar.Link>
         {/* <Navbar.Link href="#">About</Navbar.Link>
