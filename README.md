@@ -1,8 +1,21 @@
-# React + Vite
+# Frontend - React.js
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
 
-Currently, two official plugins are available:
+# Assignment_12: assignment_category_0010
+# Website Themes: Fitness Tracker Project
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+# Website Link: 
+Click here to see the website:[https://trendbuy.netlify.app/]
+## Project Overview
+This is the frontend of the project built with React.js. It allows users to search, filter, and view products by brand name, category, and price range.
+
+## Prerequisites
+- Node.js (v12 or later)
+- npm or yarn
+
+## Setup Instructions
+
+1. **Clone the repository:**
+   ```bash
+   git clone <frontend-repo-url>
+   cd frontend-repo-folder
