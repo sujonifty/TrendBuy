@@ -20,7 +20,7 @@ const Products = () => {
     // const [categories, setCategories] = useState([]);
     const numberOfPage = Math.ceil(count / itemsPerPage);
     useEffect(() => {
-        fetch(`http://localhost:5000/filteredData`)
+        fetch(`https://trend-buy-server-side.vercel.app/filteredData`)
             .then(res => res.json())
             .then(data => setAllProducts(data))
     }, [])
@@ -82,27 +82,27 @@ const Products = () => {
         }
     }
     useEffect(() => {
-        fetch(`http://localhost:5000/products?page=${currentPage}&&size=${itemsPerPage}`)
+        fetch(`https://trend-buy-server-side.vercel.app/products?page=${currentPage}&&size=${itemsPerPage}`)
             .then(res => res.json())
             .then(data => setProducts(data))
     }, [currentPage, itemsPerPage, search]);
 
     useEffect(() => {
-        fetch('http://localhost:5000/productsCount')
+        fetch('https://trend-buy-server-side.vercel.app/productsCount')
             .then(res => res.json())
             .then(data => setCount(data.count))
     }, [])
     console.log('search', search)
     // searching section 
     const handleSearch = () => {
-        fetch(`http://localhost:5000/search?search=${search}`)
+        fetch(`https://trend-buy-server-side.vercel.app/search?search=${search}`)
             .then(res => res.json())
             .then(data => setProducts(data))
     }
 
     const handleSort = (sortType) => {
         console.log(sortType)
-        fetch(`http://localhost:5000/sort/${sortType}`)
+        fetch(`https://trend-buy-server-side.vercel.app/sort/${sortType}`)
             .then(res => res.json())
             .then(data => {
                 console.log(data)
