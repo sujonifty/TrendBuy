@@ -1,22 +1,69 @@
 import ProductCards from "./ProductCards";
 import { useEffect, useState } from "react";
-import { Button, Dropdown, Label, TextInput } from "flowbite-react";
+import { Button, Dropdown, TextInput } from "flowbite-react";
 import Swal from "sweetalert2";
+import useAxiosPublic from "../../Hooks/useAxiosPublic";
 
 const Products = () => {
     const [products, setProducts] = useState([]);
+    const [allProducts, setAllProducts] = useState([]);
     const [currentPage, setCurrentPage] = useState(0);
     const [itemsPerPage, setItemsPerPage] = useState(8);
     const [count, setCount] = useState(0);
     const [search, setSearch] = useState('');
+    const [searchTerm, setSearchTerm] = useState('');
+    const [selectedBrand, setSelectedBrand] = useState('');
+    const [selectedCategory, setSelectedCategory] = useState('');
+    const [selectedPriceRange, setSelectedPriceRange] = useState('');
+    const [brands, setBrands] = useState([]);
+    
+    // const [categories, setCategories] = useState([]);
     const numberOfPage = Math.ceil(count / itemsPerPage);
+    useEffect(()=>{
+        fetch(`http://localhost:5000/filteredData`)
+            .then(res => res.json())
+            .then(data => setAllProducts(data))
+    },[])
+    console.log('all', allProducts)
+    console.log('pagi', products)
 
-    // count the page
-    // const pages = [];
-    // for(let i=0; i<numberOfPage; i++){
-    //     pages.push(i);
-    // }
-    // same operation using one line code 
+    useEffect(() => {
+        
+        if (selectedBrand) {
+            const filterBrands = allProducts.filter((item) => item.brandName===selectedBrand);
+            setProducts(filterBrands);
+            console.log('brand', filterBrands)
+        }
+        else if (selectedBrand == '') {
+            setProducts(products);
+        }
+    }, [products, selectedBrand,allProducts])
+    useEffect(() => {
+    
+        if (selectedCategory) {
+            const filterCategories = allProducts.filter((item) => item.categoryName===selectedCategory);
+            setProducts(filterCategories);
+            console.log('category', products)
+        }
+        else if (selectedCategory == '') {
+            setProducts(products);
+        }
+    }, [allProducts,products, selectedCategory])
+
+    useEffect(() => {
+        if (selectedPriceRange) {
+            const [minPrice, maxPrice] = selectedPriceRange.split('-');
+           console.log(minPrice,maxPrice);
+           if(minPrice){
+            const filterPrice = allProducts.filter((item) => item.price>=minPrice && item.price<=maxPrice);
+            setProducts(filterPrice);
+            console.log('min', filterPrice)
+           }
+           
+    }
+
+    }, [selectedPriceRange, allProducts]);
+    // count the page 
     const pages = [...Array(numberOfPage).keys()];
     const handleItemPerPage = (e) => {
         const val = parseInt(e.target.value);
@@ -48,12 +95,11 @@ const Products = () => {
     console.log('search', search)
     // searching section 
     const handleSearch = () => {
-        // fetch(`http://localhost:5000/search?page=${currentPage}&&size=${itemsPerPage}&search=${search}`)
         fetch(`http://localhost:5000/search?search=${search}`)
             .then(res => res.json())
             .then(data => setProducts(data))
     }
-    // sorting section 
+    
     const handleSort = (sortType) => {
         console.log(sortType)
         fetch(`http://localhost:5000/sort/${sortType}`)
@@ -71,34 +117,100 @@ const Products = () => {
                 }
             })
     }
+    useEffect(() => {
+        const allBrands = products.map(product => product.brandName);
+        setBrands(allBrands);
+        // const allCategory = products.map(product => product.categoryName);
+        // setCategories([...new Set(allCategory)]);
+
+
+    }, [products])
+    // console.log(brands)
+    // console.log(categories)
     return (
         <div>
-            <div className="flex justify-evenly items-center my-16">
             <div>
-                <Dropdown label="Sort" dismissOnClick={false}>
-                    <Dropdown.Item onClick={() => handleSort('date')}>Sort  by date</Dropdown.Item>
-                    <Dropdown.Item onClick={() => handleSort('price')}>Sort by price</Dropdown.Item>
-                </Dropdown>
-            </div>
-            <div className="flex justify-center items-center ">
-                <TextInput
-                    className="w-3/4"
-                    id="search"
-                    placeholder="Searching..."
-                    value={search}
-                    onChange={(event) => setSearch(event.target.value)}
-                    required
+                <input
+                    type="text"
+                    value={searchTerm}
+                    onChange={(e) => setSearchTerm(e.target.value)}
+                    placeholder="Search for products"
                 />
-                <span className="w-full">
-                    <Button className="rounded-l-none -ml-2" onClick={handleSearch}>search</Button>
-                </span>
+
+                <select
+                    value={selectedBrand}
+                    onChange={(e) => setSelectedBrand(e.target.value)}
+                >
+                    <option value="">All Brands</option>
+                    {brands.map((brand) => (
+                        <option key={brand} value={brand}>
+                            {brand}
+                        </option>
+                    ))}
+                </select>
+
+                <select
+                    value={selectedCategory}
+                    onChange={(e) => setSelectedCategory(e.target.value)}
+                >
+                    <option value="">All Categories</option>
+                    {/* {categories.map((category) => (
+                        <option key={category} value={category}>
+                            {category}
+                        </option>
+                    ))} */}
+                    <option value="Fitness">Fitness</option>
+                    <option value="Outdoor">Outdoor</option>
+                    <option value="Kitchen">Kitchen</option>
+                    <option value="Electronics">Electronics</option>
+                    <option value="Personal Care">Personal Care</option>
+
+                </select>
+
+                <select 
+                    value={selectedPriceRange} 
+                    onChange={(e) => setSelectedPriceRange(e.target.value)}
+                >
+                    <option value="">Prices</option>
+                    <option value="0-50">0 - 50</option>
+                    <option value="51-100">51 - 100</option>
+                    <option value="101-200">101 - 200</option>
+                    <option value="201-500">201 - 500</option>
+                    
+                </select>
+               
+
+
             </div>
+            {/* <ProductSearch></ProductSearch> */}
+            <div className="flex justify-evenly items-center my-16">
+                <div>
+                    <Dropdown label="Sort" dismissOnClick={false}>
+                        <Dropdown.Item onClick={() => handleSort('date')}>Sort  by date</Dropdown.Item>
+                        <Dropdown.Item onClick={() => handleSort('price')}>Sort by price</Dropdown.Item>
+                    </Dropdown>
+                </div>
+                <div className="flex justify-center items-center ">
+                    <TextInput
+                        className="w-3/4"
+                        id="search"
+                        placeholder="Searching..."
+                        value={search}
+                        onChange={(event) => setSearch(event.target.value)}
+                        required
+                    />
+                    <span className="w-full">
+                        <Button className="rounded-l-none -ml-2" onClick={handleSearch}>search</Button>
+                    </span>
+                </div>
             </div>
+
             <div className="grid grid-cols-1 md:grid-cols-4 lg:grid-col-5  gap-10">
                 {
                     products.map(item => <ProductCards key={item._id} item={item}></ProductCards>)
                 }
             </div>
+
             <div className="flex justify-start items-end gap-10 my-10">
                 <p className=" p-3">current Page: {currentPage}</p>
 

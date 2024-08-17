@@ -2,6 +2,7 @@ import { Card } from "flowbite-react";
 
 const ProductCards = ({ item }) => {
     const { title, image, brandName, categoryName, price, description, date } = item;
+    
     return (
         <Card
             className="max-w-sm relative"
