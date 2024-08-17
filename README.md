@@ -3,7 +3,7 @@
 # Website Themes: TrendBuy-products management
 
 # Website Link: 
-Click here to see the website:[https://trendbuy.netlify.app/]
+Click here to see the website:[https://trendbuy-f057c.web.app/]
 ## Project Overview
 This is the frontend of the project built with React.js. It allows users to search, filter, and view products by brand name, category, and price range.
 

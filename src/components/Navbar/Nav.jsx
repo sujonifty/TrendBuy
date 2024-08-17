@@ -56,11 +56,14 @@ const Nav = () => {
         </Dropdown>
         <Navbar.Toggle />
       </div>
-      :
+      :<>
       <Button>
                 <NavLink to="/login">Login</NavLink>
       </Button>
-
+      {/* <Button>
+                <NavLink to="/register">Register</NavLink>
+      </Button> */}
+      </>
       }
     </Navbar>
     );
