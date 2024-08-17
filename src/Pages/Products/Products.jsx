@@ -129,8 +129,8 @@ const Products = () => {
     // console.log(categories)
     return (
         <div>
-            s
-            <div className="flex flex-wrap  justify-center items-center gap-5 md:gap-40 my-16 bg-red-500">
+            
+            <div className="flex flex-wrap  justify-center items-center gap-5 md:gap-40 my-16 ">
 
                 <div className="flex justify-center items-center ">
                     <TextInput
@@ -192,10 +192,11 @@ const Products = () => {
 
                 </div>
 
-                <div className="ml-20 -mt-[72px] md:m-0">
+                <div className="ml-20 -mt-[72px] md:ml-0 md:-mt-0">
                     <Dropdown label="Sort" dismissOnClick={false}>
                         <Dropdown.Item onClick={() => handleSort('date')}>Sort  by date</Dropdown.Item>
-                        <Dropdown.Item onClick={() => handleSort('price')}>Sort by price</Dropdown.Item>
+                        <Dropdown.Item onClick={() => handleSort('lowPrice')}>Sort by lowPrice</Dropdown.Item>
+                        <Dropdown.Item onClick={() => handleSort('highPrice')}>Sort by highPrice</Dropdown.Item>
                     </Dropdown>
                 </div>
             </div>
@@ -206,8 +207,8 @@ const Products = () => {
                 }
             </div>
 
-            <div className="flex justify-start items-end gap-10 my-10">
-                <p className=" p-3">current Page: {currentPage}</p>
+            <div className="flex flex-wrap justify-start items-end gap-4 md:gap-10 my-10">
+                {/* <p className=" p-3">current Page: {currentPage}</p> */}
 
                 <Button onClick={handlePrevPage}>Prev</Button>
                 {
