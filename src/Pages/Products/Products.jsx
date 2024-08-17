@@ -129,17 +129,12 @@ const Products = () => {
     // console.log(categories)
     return (
         <div>
-s
-            <div className="flex flex-wrap flex-col-reverse  justify-evenly items-center my-16">
-            <div>
-                    <Dropdown label="Sort" dismissOnClick={false}>
-                        <Dropdown.Item onClick={() => handleSort('date')}>Sort  by date</Dropdown.Item>
-                        <Dropdown.Item onClick={() => handleSort('price')}>Sort by price</Dropdown.Item>
-                    </Dropdown>
-                </div>
+            s
+            <div className="flex flex-wrap  justify-center items-center gap-5 md:gap-40 my-16 bg-red-500">
+
                 <div className="flex justify-center items-center ">
                     <TextInput
-                        className="w-3/4"
+                        className="w-40"
                         id="search"
                         placeholder="Searching..."
                         value={search}
@@ -152,7 +147,7 @@ s
                 </div>
                 <div className=" rounded-lg">
                     <select
-                    className=" rounded-l-lg"
+                        className=" rounded-l-lg"
                         value={selectedBrand}
                         onChange={(e) => setSelectedBrand(e.target.value)}
                     >
@@ -183,7 +178,7 @@ s
                     </select>
 
                     <select
-                    className=" rounded-r-lg"
+                        className=" rounded-r-lg"
                         value={selectedPriceRange}
                         onChange={(e) => setSelectedPriceRange(e.target.value)}
                     >
@@ -196,7 +191,13 @@ s
                     </select>
 
                 </div>
-                
+
+                <div className="ml-20 -mt-[72px] md:m-0">
+                    <Dropdown label="Sort" dismissOnClick={false}>
+                        <Dropdown.Item onClick={() => handleSort('date')}>Sort  by date</Dropdown.Item>
+                        <Dropdown.Item onClick={() => handleSort('price')}>Sort by price</Dropdown.Item>
+                    </Dropdown>
+                </div>
             </div>
 
             <div className="grid grid-cols-1 md:grid-cols-4 lg:grid-col-5  gap-10">
