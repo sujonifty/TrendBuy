@@ -16,51 +16,51 @@ const Products = () => {
     const [selectedCategory, setSelectedCategory] = useState('');
     const [selectedPriceRange, setSelectedPriceRange] = useState('');
     const [brands, setBrands] = useState([]);
-    
+
     // const [categories, setCategories] = useState([]);
     const numberOfPage = Math.ceil(count / itemsPerPage);
-    useEffect(()=>{
+    useEffect(() => {
         fetch(`http://localhost:5000/filteredData`)
             .then(res => res.json())
             .then(data => setAllProducts(data))
-    },[])
-    console.log('all', allProducts)
-    console.log('pagi', products)
+    }, [])
+    // console.log('all', allProducts)
+    // console.log('pagi', products)
 
     useEffect(() => {
-        
+
         if (selectedBrand) {
-            const filterBrands = allProducts.filter((item) => item.brandName===selectedBrand);
+            const filterBrands = allProducts.filter((item) => item.brandName === selectedBrand);
             setProducts(filterBrands);
             console.log('brand', filterBrands)
         }
         else if (selectedBrand == '') {
             setProducts(products);
         }
-    }, [products, selectedBrand,allProducts])
+    }, [products, selectedBrand, allProducts])
     useEffect(() => {
-    
+
         if (selectedCategory) {
-            const filterCategories = allProducts.filter((item) => item.categoryName===selectedCategory);
+            const filterCategories = allProducts.filter((item) => item.categoryName === selectedCategory);
             setProducts(filterCategories);
             console.log('category', products)
         }
         else if (selectedCategory == '') {
             setProducts(products);
         }
-    }, [allProducts,products, selectedCategory])
+    }, [allProducts, products, selectedCategory])
 
     useEffect(() => {
         if (selectedPriceRange) {
             const [minPrice, maxPrice] = selectedPriceRange.split('-');
-           console.log(minPrice,maxPrice);
-           if(minPrice){
-            const filterPrice = allProducts.filter((item) => item.price>=minPrice && item.price<=maxPrice);
-            setProducts(filterPrice);
-            console.log('min', filterPrice)
-           }
-           
-    }
+            console.log(minPrice, maxPrice);
+            if (minPrice) {
+                const filterPrice = allProducts.filter((item) => item.price >= minPrice && item.price <= maxPrice);
+                setProducts(filterPrice);
+                console.log('min', filterPrice)
+            }
+
+        }
 
     }, [selectedPriceRange, allProducts]);
     // count the page 
@@ -99,7 +99,7 @@ const Products = () => {
             .then(res => res.json())
             .then(data => setProducts(data))
     }
-    
+
     const handleSort = (sortType) => {
         console.log(sortType)
         fetch(`http://localhost:5000/sort/${sortType}`)
@@ -129,62 +129,9 @@ const Products = () => {
     // console.log(categories)
     return (
         <div>
+s
+            <div className="flex flex-wrap flex-col-reverse  justify-evenly items-center my-16">
             <div>
-                <input
-                    type="text"
-                    value={searchTerm}
-                    onChange={(e) => setSearchTerm(e.target.value)}
-                    placeholder="Search for products"
-                />
-
-                <select
-                    value={selectedBrand}
-                    onChange={(e) => setSelectedBrand(e.target.value)}
-                >
-                    <option value="">All Brands</option>
-                    {brands.map((brand) => (
-                        <option key={brand} value={brand}>
-                            {brand}
-                        </option>
-                    ))}
-                </select>
-
-                <select
-                    value={selectedCategory}
-                    onChange={(e) => setSelectedCategory(e.target.value)}
-                >
-                    <option value="">All Categories</option>
-                    {/* {categories.map((category) => (
-                        <option key={category} value={category}>
-                            {category}
-                        </option>
-                    ))} */}
-                    <option value="Fitness">Fitness</option>
-                    <option value="Outdoor">Outdoor</option>
-                    <option value="Kitchen">Kitchen</option>
-                    <option value="Electronics">Electronics</option>
-                    <option value="Personal Care">Personal Care</option>
-
-                </select>
-
-                <select 
-                    value={selectedPriceRange} 
-                    onChange={(e) => setSelectedPriceRange(e.target.value)}
-                >
-                    <option value="">Prices</option>
-                    <option value="0-50">0 - 50</option>
-                    <option value="51-100">51 - 100</option>
-                    <option value="101-200">101 - 200</option>
-                    <option value="201-500">201 - 500</option>
-                    
-                </select>
-               
-
-
-            </div>
-            {/* <ProductSearch></ProductSearch> */}
-            <div className="flex justify-evenly items-center my-16">
-                <div>
                     <Dropdown label="Sort" dismissOnClick={false}>
                         <Dropdown.Item onClick={() => handleSort('date')}>Sort  by date</Dropdown.Item>
                         <Dropdown.Item onClick={() => handleSort('price')}>Sort by price</Dropdown.Item>
@@ -203,6 +150,53 @@ const Products = () => {
                         <Button className="rounded-l-none -ml-2" onClick={handleSearch}>search</Button>
                     </span>
                 </div>
+                <div className=" rounded-lg">
+                    <select
+                    className=" rounded-l-lg"
+                        value={selectedBrand}
+                        onChange={(e) => setSelectedBrand(e.target.value)}
+                    >
+                        <option value="">All Brands</option>
+                        {brands.map((brand) => (
+                            <option key={brand} value={brand}>
+                                {brand}
+                            </option>
+                        ))}
+                    </select>
+
+                    <select
+                        value={selectedCategory}
+                        onChange={(e) => setSelectedCategory(e.target.value)}
+                    >
+                        <option value="">All Categories</option>
+                        {/* {categories.map((category) => (
+                       <option key={category} value={category}>
+                           {category}
+                       </option>
+                   ))} */}
+                        <option value="Fitness">Fitness</option>
+                        <option value="Outdoor">Outdoor</option>
+                        <option value="Kitchen">Kitchen</option>
+                        <option value="Electronics">Electronics</option>
+                        <option value="Personal Care">Personal Care</option>
+
+                    </select>
+
+                    <select
+                    className=" rounded-r-lg"
+                        value={selectedPriceRange}
+                        onChange={(e) => setSelectedPriceRange(e.target.value)}
+                    >
+                        <option value="">Prices</option>
+                        <option value="0-50">0 - 50</option>
+                        <option value="51-100">51 - 100</option>
+                        <option value="101-200">101 - 200</option>
+                        <option value="201-500">201 - 500</option>
+
+                    </select>
+
+                </div>
+                
             </div>
 
             <div className="grid grid-cols-1 md:grid-cols-4 lg:grid-col-5  gap-10">
